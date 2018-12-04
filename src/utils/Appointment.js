@@ -7,6 +7,30 @@ export const Appointment = {
 		 * TODO: Fetch data all pasien
 		 * @return listAllPasien
 		 */
+		return fetch(`${cors}${baseUrl}/1/getAllPasien`, {
+			method: 'GET',
+		})
+		.then(response => {
+			return response.json()
+		})
+		.then(jsonResponse => {
+			return jsonResponse
+		})
+	},
+	getAllDokter() {
+		/** 
+		 * TODO: Fetch data all dokter
+		 * @return listAllDokter
+		 */
+		return fetch(`${cors}${baseUrl}/1/getAllDokter`, {
+			method: 'GET',
+		})
+		.then(response => {
+			return response.json()
+		})
+		.then(jsonResponse => {
+			return jsonResponse
+		})
 	},
 	getDetailPasien(idPasien) {
 		/** 
@@ -14,6 +38,15 @@ export const Appointment = {
 		 * @param idPasien
 		 * @return detailPasien
 		 */
+		return fetch(`${cors}${baseUrl}/getPasien/${idPasien}`, {
+			method: 'GET',
+		})
+		.then(response => {
+			return response.json()
+		})
+		.then(jsonResponse => {
+			return jsonResponse
+		})
 	},
 	updateStatusPasien(requestBody) {
 		/** 
@@ -21,5 +54,38 @@ export const Appointment = {
 		 * @param requestBody
 		 * @return responseRequest
 		 */
+		return fetch(`${cors}${baseUrl}/1/updatePasien`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(requestBody)
+		})
+		.then(response => {
+			return response.json()
+		})
+		.then(jsonResponse => {
+			return jsonResponse
+		})
+	},
+	addBillingPasien(requestBody) {
+		/** 
+		 * TODO: POST billing pasien ke SI-Appointment
+		 * @param requestBody
+		 * @return responseRequest
+		 */
+		return fetch(`${cors}${baseUrl}/1/addBilling`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(requestBody)
+		})
+		.then(response => {
+			return response.json()
+		})
+		.then(jsonResponse => {
+			return jsonResponse
+		})
 	}
 }

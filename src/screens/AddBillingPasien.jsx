@@ -1,11 +1,11 @@
 import React from 'react';
 import { Loading } from '../components/Loading';
-import { FormUpdatePasien } from '../containers/FormUpdatePasien';
+import { FormAddBillingPasien } from '../containers/FormAddBillingPasien';
 import { Appointment } from '../utils/Appointment';
 
-export class UpdatePasien extends React.Component {
+export class AddBillingPasien extends React.Component {
 	/** 
-	 * TODO: Akses method getDetailPasien(idPasien) pada Appointment dan lakukan update state. 
+	 * TODO: Akses method getDetailPasien(idPasien) pada Appointment dan lakukan add billing state. 
 	 * TODO: Lakukan pemanggilan pada constructor() atau pada lifecycle componentDidMount()
 	 */
 
@@ -40,48 +40,51 @@ export class UpdatePasien extends React.Component {
 		this.setState({
 			loading: true
 		})
-
-		const data = new FormData(e.target)
+ 		const data = new FormData(e.target)
 		const dataJson = {}
 
 		data.forEach((val, key) => {
-			if (val !== "") {
-				let name = key.split('.');
-				if (name.length > 1) {
-					let last = name.pop()
-					name.reduce((prev, next) => {
-						return prev[next] = prev[next] || {};
-					}, dataJson)[last] = val
+			if (val !== '' && key !== 'nama') {
+				if (key === 'id') {
+					dataJson['pasien'] = {
+						id: val
+					}
 				} else {
 					dataJson[key] = val
 				}
 			}
 		})
-
-		Appointment.updateStatusPasien(dataJson).then(response => {
+		
+		Appointment.addBillingPasien(dataJson).then(response => {
 			if (response.status === 200) {
 				this.setState({
 					loading: false,
-					pasien: response.result
 				})
-				alert(`Sukses update pasien ${this.state.pasien.nama}`)
+				alert(`Sukses add billing pasien ${this.state.pasien.nama}`)
+				this.props.history.push('/all-pasien')
 			} else {
 				this.setState({
 					loading: false
 				})
-				alert(`Gagal update pasien ${this.state.pasien.nama}`)
+				alert(`Gagal add billing pasien ${this.state.pasien.nama}`)
 			}
 		})
 	}
 
 	render() {
+		var tanggalTagihan = new Date(Date.now());
+		var month = '' + (tanggalTagihan.getMonth() + 1);
+		var day = '' + tanggalTagihan.getDate();
+		if (month.length < 2) month = '0' + month;
+		if (day.length < 2) day = '0' + day;
+		tanggalTagihan = [tanggalTagihan.getFullYear(), month, day].join('-'); 
 		if (this.state.loading) {
 			return (
 				<Loading msg="Fetching Data..." />
 			)
 		} else {
 			return (
-				<FormUpdatePasien pasien={this.state.pasien} onSubmit={this.handleFormSubmit} />
+				<FormAddBillingPasien pasien={this.state.pasien} tanggalTagihan={tanggalTagihan} onSubmit={this.handleFormSubmit} />
 			)
 		}
 	}
